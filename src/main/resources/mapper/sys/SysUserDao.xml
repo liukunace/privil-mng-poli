@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.SysUserDao">
+
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="string">
+		select m.perms from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+	
+	<!-- 查询用户的所有菜单ID --> 
+	<select id="queryAllMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+
+    <!-- 查询用户的所有菜单ID //无法根据name，外键为id-->
+    <select id="queryAllMenuIdByName" resultType="string">
+		select distinct rm.menu_id from sys_user_role ur
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+		where ur.user_id = #{userName}
+	</select>
+
+	<select id="queryUserByDeptPerms" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		SELECT distinct u0.*
+        FROM sys_department d
+        INNER JOIN sys_user_department ud ON d.dept_id=ud.dept_id INNER JOIN sys_user u0 ON u0.user_id=ud.user_id
+        WHERE d.dept_id=#{deptId} and u0.ding_name like #{dingName}
+	</select>
+
+	<select id="queryUserByRolePerms" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		SELECT distinct u0.*
+        FROM sys_role r
+        INNER JOIN sys_user_role ur ON r.role_id=ur.role_id INNER JOIN sys_user u0 ON u0.user_id=ur.user_id
+        WHERE r.role_id=#{roleId} and u0.ding_name like #{dingName}
+	</select>
+
+    <select id="queryUserIdByName" resultType="long">
+		select distinct ur.user_id from sys_user ur
+		where ur.username = #{userName}
+	</select>
+
+	<select id="queryByUserName" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where username = #{username}
+	</select>
+
+    <select id="queryByDingId" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where ding_id = #{dingId}
+	</select>
+
+    <select id="queryByDingName" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where ding_name = #{dingName}
+	</select>
+
+    <select id="queryUserByDingId" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where ding_id = #{dingId}
+	</select>
+
+    <select id="queryUserByUserIds" resultType="io.renren.modules.sys.entity.SysUserEntity">
+        select * from sys_user d
+        where
+        d.user_id  in
+        <foreach item="userId"  collection="list" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+
+
+<!--    <select id="getDevicesAll" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from sys_devices d-->
+<!--        where-->
+<!--        d.devices_id  in-->
+<!--        <foreach item="devices_id" index="index" collection="array"-->
+<!--                 open="(" separator="," close=")">-->
+<!--            #{devices_id}-->
+<!--        </foreach>-->
+<!--    </select>-->
+
+<!--    <delete id="deleteBatch">-->
+<!--        delete from sys_user_role where role_id in-->
+<!--        <foreach item="roleId" collection="array" open="(" separator="," close=")">-->
+<!--            #{roleId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+</mapper>

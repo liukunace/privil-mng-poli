@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.SysUserProjectDao">
+
+    <delete id="deleteBatch">
+        delete from sys_user_project where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+
+	<select id="queryProjectIdList" resultType="long">
+		select project_id  from sys_user_project where user_id = #{value}
+	</select>
+
+    <select id="queryUserIdList" resultType="long">
+		select user_id from sys_user_project where project_id = #{value}
+	</select>
+
+</mapper>

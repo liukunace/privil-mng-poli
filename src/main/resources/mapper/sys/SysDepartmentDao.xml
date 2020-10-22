@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.SysDepartmentDao">
+
+	<select id="queryListParentId" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department where p_id = #{parentId} order by rankn asc
+	</select>
+
+    <select id="queryListUpParentId" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department where dept_id = #{id}
+	</select>
+
+    <select id="queryDeptByLabel" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department where label = #{label}
+	</select>
+
+    <select id="queryDeptByValue" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department where value = #{value}
+	</select>
+
+    <select id="queryDeptByDingId" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department where ding_id = #{dingId}
+	</select>
+
+	<select id="queryDeptList" resultType="io.renren.modules.sys.entity.SysDepartmentEntity">
+		select * from sys_department order by rankn asc
+	</select>
+
+</mapper>
